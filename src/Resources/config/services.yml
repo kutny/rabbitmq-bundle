@@ -1,0 +1,36 @@
+services:
+    _defaults:
+        autowire: true
+
+    Kutny\RabbitMqBundle\Channel\AmqpChannelFactory:
+        - '@PhpAmqpLib\Connection\AMQPLazyConnection'
+
+    Kutny\RabbitMqBundle\Consumer\ConsumerListCommand:
+        tags:
+            - {name: console.command}
+
+    Kutny\RabbitMqBundle\Consumer\Message\MessageParametersGetter:
+
+    Kutny\RabbitMqBundle\Consumer\Message\MessagesManager:
+
+    Kutny\RabbitMqBundle\Consumer\ParametersResolver:
+
+    Kutny\RabbitMqBundle\Json\JsonDecoder:
+
+    Kutny\RabbitMqBundle\Publisher\Publisher:
+
+    Kutny\RabbitMqBundle\Queue\Purger:
+
+    PhpAmqpLib\Channel\AMQPChannel.pid:
+        class: PhpAmqpLib\Channel\AMQPChannel
+        factory: ['@Kutny\RabbitMqBundle\Channel\AmqpChannelFactory', 'createChannelFromPid']
+
+    PhpAmqpLib\Connection\AMQPLazyConnection:
+        arguments:
+            $host: %kutny_rabbit_mq.host%
+            $port: %kutny_rabbit_mq.port%
+            $user: %kutny_rabbit_mq.user%
+            $password: %kutny_rabbit_mq.password%
+            $vhost: %kutny_rabbit_mq.vhost%
+            $connection_timeout: %kutny_rabbit_mq.connection_timeout%
+            $read_write_timeout: %kutny_rabbit_mq.read_write_timeout%
